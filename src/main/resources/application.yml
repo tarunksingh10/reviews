@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://18.217.105.222:27017/reviews
+      
+---
+# Local development environment
+spring:
+  profiles: default
+      
