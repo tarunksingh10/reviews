@@ -30,8 +30,8 @@ public class ReviewController {
 
 	@GetMapping("/outputTableEntry")
 	public List<OutputTable> getAllOutputTable() {
-		//Sort sortByDateDesc = new Sort(Sort.Direction.DESC, "date");
-		return reviewRepository.findAll();
+		List<OutputTable>  list = reviewRepository.findAll();
+		return list;
 	}
 
 	@PostMapping("/outputTableEntry")
@@ -56,7 +56,10 @@ public class ReviewController {
 		if (outputTableEntry == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-
+		outputTableEntry.setCategory(outputTable.getCategory());
+		outputTableEntry.setProperty(outputTable.getProperty());
+		outputTableEntry.setSource(outputTable.getSource());
+		outputTableEntry.setSentiment_y(outputTable.getSentiment_y());
 		OutputTable updatedOutputTableEntry = reviewRepository.save(outputTableEntry);
 		return new ResponseEntity<>(updatedOutputTableEntry, HttpStatus.OK);
 	}
