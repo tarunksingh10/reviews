@@ -56,10 +56,9 @@ public class ReviewController {
 		if (outputTableEntry == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		outputTableEntry.setCategory(outputTable.getCategory());
-		outputTableEntry.setProperty(outputTable.getProperty());
-		outputTableEntry.setSource(outputTable.getSource());
-		outputTableEntry.setSentiment_y(outputTable.getSentiment_y());
+		outputTableEntry.setCorrectCategory(outputTable.isCorrectCategory());
+		outputTableEntry.setFeedback(outputTable.getFeedback());
+		
 		OutputTable updatedOutputTableEntry = reviewRepository.save(outputTableEntry);
 		return new ResponseEntity<>(updatedOutputTableEntry, HttpStatus.OK);
 	}

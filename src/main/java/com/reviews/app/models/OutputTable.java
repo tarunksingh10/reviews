@@ -26,5 +26,7 @@ public class OutputTable {
 	private String Date;
 	private String Property;
 	private String Unique_id;
+	private String feedback;
+	private boolean correctCategory;
 
 }
