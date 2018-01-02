@@ -5,6 +5,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.reviews.app.models.OutputTable;
+import com.reviews.app.models.SearchCriteria;
 import com.reviews.app.repositories.ReviewRepository;
 
 @RestController
@@ -26,11 +30,13 @@ import com.reviews.app.repositories.ReviewRepository;
 public class ReviewController {
 
 	@Autowired
-	ReviewRepository reviewRepository;
+	private ReviewRepository reviewRepository;
+	@Autowired
+	private MongoTemplate mongoTemplate;
 
 	@GetMapping("/outputTableEntry")
 	public List<OutputTable> getAllOutputTable() {
-		List<OutputTable>  list = reviewRepository.findAll();
+		List<OutputTable> list = reviewRepository.findAll();
 		return list;
 	}
 
@@ -58,7 +64,7 @@ public class ReviewController {
 		}
 		outputTableEntry.setCorrectCategory(outputTable.isCorrectCategory());
 		outputTableEntry.setFeedback(outputTable.getFeedback());
-		
+
 		OutputTable updatedOutputTableEntry = reviewRepository.save(outputTableEntry);
 		return new ResponseEntity<>(updatedOutputTableEntry, HttpStatus.OK);
 	}
@@ -66,5 +72,21 @@ public class ReviewController {
 	@DeleteMapping(value = "/outputTableEntry/{id}")
 	public void deleteTodo(@PathVariable("id") String id) {
 		reviewRepository.delete(id);
+	}
+
+	@PostMapping(value = "/getFilteredOutputTable")
+	public List<OutputTable> getFilteredOutputTable(@Valid @RequestBody SearchCriteria searchCriteria) {
+		Query query = new Query();
+		if (searchCriteria.getCity() != null) {
+			query.addCriteria(Criteria.where("city").exists(true).andOperator(Criteria.where("city").is(searchCriteria.getCity())));
+		}
+		if (searchCriteria.getProperty() != null) {
+			query.addCriteria(Criteria.where("property").exists(true).andOperator(Criteria.where("property").is(searchCriteria.getProperty())));
+		}
+		if (searchCriteria.getSource() != null) {
+			query.addCriteria(Criteria.where("source").exists(true).andOperator(Criteria.where("source").is(searchCriteria.getSource())));
+		}
+		List<OutputTable> listOutput = mongoTemplate.find(query, OutputTable.class);
+		return listOutput;
 	}
 }
