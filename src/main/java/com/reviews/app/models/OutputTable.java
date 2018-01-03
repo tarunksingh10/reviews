@@ -1,5 +1,7 @@
 package com.reviews.app.models;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -23,7 +25,7 @@ public class OutputTable {
 	private String L3;
 	private String L0;
 	private String L1;
-	private String Date;
+	private Date date;
 	private String property;
 	private String Unique_id;
 	private String feedback;

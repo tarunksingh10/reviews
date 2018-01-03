@@ -77,14 +77,28 @@ public class ReviewController {
 	@PostMapping(value = "/getFilteredOutputTable")
 	public List<OutputTable> getFilteredOutputTable(@Valid @RequestBody SearchCriteria searchCriteria) {
 		Query query = new Query();
+		if (searchCriteria.getFromDate() != null && searchCriteria.getToDate() != null) {
+			query.addCriteria(Criteria.where("date").exists(true)
+					.andOperator(Criteria.where("date").gte(searchCriteria.getFromDate())
+							.andOperator(Criteria.where("date").lte(searchCriteria.getToDate()))));
+		} else if (searchCriteria.getFromDate() != null && searchCriteria.getToDate() == null) {
+			query.addCriteria(Criteria.where("date").exists(true)
+					.andOperator(Criteria.where("date").gte(searchCriteria.getFromDate())));
+		} else if (searchCriteria.getFromDate() == null && searchCriteria.getToDate() != null) {
+			query.addCriteria(Criteria.where("date").exists(true)
+					.andOperator(Criteria.where("date").lte(searchCriteria.getToDate())));
+		}
 		if (searchCriteria.getCity() != null) {
-			query.addCriteria(Criteria.where("city").exists(true).andOperator(Criteria.where("city").is(searchCriteria.getCity())));
+			query.addCriteria(Criteria.where("city").exists(true)
+					.andOperator(Criteria.where("city").is(searchCriteria.getCity())));
 		}
 		if (searchCriteria.getProperty() != null) {
-			query.addCriteria(Criteria.where("property").exists(true).andOperator(Criteria.where("property").is(searchCriteria.getProperty())));
+			query.addCriteria(Criteria.where("property").exists(true)
+					.andOperator(Criteria.where("property").is(searchCriteria.getProperty())));
 		}
 		if (searchCriteria.getSource() != null) {
-			query.addCriteria(Criteria.where("source").exists(true).andOperator(Criteria.where("source").is(searchCriteria.getSource())));
+			query.addCriteria(Criteria.where("source").exists(true)
+					.andOperator(Criteria.where("source").is(searchCriteria.getSource())));
 		}
 		List<OutputTable> listOutput = mongoTemplate.find(query, OutputTable.class);
 		return listOutput;
