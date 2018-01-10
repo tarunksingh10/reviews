@@ -15,19 +15,19 @@ public class OutputTable {
 	private String id;
 	private String category;
 	private String city;
-	private String Sentiment_y;
-	private String Sentiment_x;
-	private String Verbatim;
-	private String Sentence;
+	private String sentiment_y;
+	private String sentiment_x;
+	private String verbatim;
+	private String sentence;
 	private String source;
 	private String sentence_id;
-	private String L2;
-	private String L3;
-	private String L0;
-	private String L1;
+	private String l2;
+	private String l3;
+	private String l0;
+	private String l1;
 	private Date date;
 	private String property;
-	private String Unique_id;
+	private String unique_id;
 	private String feedback;
 	private boolean correctCategory;
 
