@@ -15,10 +15,13 @@ public class OutputTable {
 	private String id;
 	private String category;
 	private String city;
-	private String sentiment_y;
-	private String sentiment_x;
-	private String verbatim;
+	private String sentiment;
+	private String sentiment_text;
+	private String rating;
+	private String review;
 	private String sentence;
+	private String hotel;
+	private String header;
 	private String source;
 	private String sentence_id;
 	private String l2;
@@ -26,8 +29,8 @@ public class OutputTable {
 	private String l0;
 	private String l1;
 	private Date date;
-	private String property;
 	private String unique_id;
+	private String exec_Status;
 	private String feedback;
 	private boolean correctCategory;
 
