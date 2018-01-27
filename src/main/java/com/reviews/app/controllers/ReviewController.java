@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.reviews.app.models.OutputTable;
-import com.reviews.app.models.SearchCriteria;
 import com.reviews.app.repositories.ReviewRepository;
 
 @RestController
@@ -74,31 +74,31 @@ public class ReviewController {
 		reviewRepository.delete(id);
 	}
 
-	@PostMapping(value = "/getFilteredOutputTable")
-	public List<OutputTable> getFilteredOutputTable(@Valid @RequestBody SearchCriteria searchCriteria) {
+	@GetMapping(value = "/getFilteredOutputTable")
+	public List<OutputTable> getFilteredOutputTable(@RequestParam(value = "city", required = false) String city,
+			@RequestParam(value = "hotel", required = false) String hotel,
+			@RequestParam(value = "source", required = false) String source,
+			@RequestParam(value = "fromDate", required = false) String fromDate,
+			@RequestParam(value = "toDate", required = false) String toDate) {
 		Query query = new Query();
-		if (searchCriteria.getFromDate() != null && searchCriteria.getToDate() != null) {
+
+		/*if (fromDate != null && toDate != null) {
 			query.addCriteria(Criteria.where("date").exists(true)
-					.andOperator(Criteria.where("date").gte(searchCriteria.getFromDate())
-							.andOperator(Criteria.where("date").lte(searchCriteria.getToDate()))));
-		} else if (searchCriteria.getFromDate() != null && searchCriteria.getToDate() == null) {
-			query.addCriteria(Criteria.where("date").exists(true)
-					.andOperator(Criteria.where("date").gte(searchCriteria.getFromDate())));
-		} else if (searchCriteria.getFromDate() == null && searchCriteria.getToDate() != null) {
-			query.addCriteria(Criteria.where("date").exists(true)
-					.andOperator(Criteria.where("date").lte(searchCriteria.getToDate())));
+					.andOperator(Criteria.where("date").gte(fromDate).andOperator(Criteria.where("date").lte(toDate))));
+		} else if (fromDate != null && toDate == null) {
+			query.addCriteria(Criteria.where("date").exists(true).andOperator(Criteria.where("date").gte(fromDate)));
+		} else if (fromDate == null && toDate != null) {
+			query.addCriteria(Criteria.where("date").exists(true).andOperator(Criteria.where("date").lte(toDate)));
+		}*/
+
+		if (city != null) {
+			query.addCriteria(Criteria.where("city").is(city));
 		}
-		if (searchCriteria.getCity() != null) {
-			query.addCriteria(Criteria.where("city").exists(true)
-					.andOperator(Criteria.where("city").is(searchCriteria.getCity())));
+		if (hotel != null) {
+			query.addCriteria(Criteria.where("hotel").is(hotel));
 		}
-		if (searchCriteria.getProperty() != null) {
-			query.addCriteria(Criteria.where("property").exists(true)
-					.andOperator(Criteria.where("property").is(searchCriteria.getProperty())));
-		}
-		if (searchCriteria.getSource() != null) {
-			query.addCriteria(Criteria.where("source").exists(true)
-					.andOperator(Criteria.where("source").is(searchCriteria.getSource())));
+		if (source != null) {
+			query.addCriteria(Criteria.where("source").is(source));
 		}
 		List<OutputTable> listOutput = mongoTemplate.find(query, OutputTable.class);
 		return listOutput;
