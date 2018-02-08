@@ -82,14 +82,17 @@ public class ReviewController {
 			@RequestParam(value = "toDate", required = false) String toDate) {
 		Query query = new Query();
 
-		/*if (fromDate != null && toDate != null) {
+		
+			
+		
+		if (fromDate != null && toDate != null) {
 			query.addCriteria(Criteria.where("date").exists(true)
-					.andOperator(Criteria.where("date").gte(fromDate).andOperator(Criteria.where("date").lte(toDate))));
+					.andOperator(Criteria.where("date").gte(DateMain.getDate( fromDate)).andOperator(Criteria.where("date").lte(DateMain.getDate(toDate)))));
 		} else if (fromDate != null && toDate == null) {
-			query.addCriteria(Criteria.where("date").exists(true).andOperator(Criteria.where("date").gte(fromDate)));
+			query.addCriteria(Criteria.where("date").exists(true).andOperator(Criteria.where("date").gte(DateMain.getDate(fromDate))));
 		} else if (fromDate == null && toDate != null) {
-			query.addCriteria(Criteria.where("date").exists(true).andOperator(Criteria.where("date").lte(toDate)));
-		}*/
+			query.addCriteria(Criteria.where("date").exists(true).andOperator(Criteria.where("date").lte(DateMain.getDate(toDate))));
+		}
 
 		if (city != null) {
 			query.addCriteria(Criteria.where("city").is(city));
