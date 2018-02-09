@@ -2,6 +2,12 @@ spring:
   data:
     mongodb:
       uri: 'mongodb://manthan:G*ZKAg{8vTcHy7Rs@18.217.105.222:27017/reviews'
+      
+      
+security:
+  user:
+    name: manthan
+    password: G*ZKAg{8vTcHy7Rs
 ---
 # Local development environment
 spring:
