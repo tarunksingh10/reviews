@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.reviews.app.models.OutputTable;
+import com.reviews.app.models.TestingDisplay;
 import com.reviews.app.repositories.ReviewRepository;
 
 @RestController
@@ -35,19 +35,19 @@ public class ReviewController {
 	private MongoTemplate mongoTemplate;
 
 	@GetMapping("/outputTableEntry")
-	public List<OutputTable> getAllOutputTable() {
-		List<OutputTable> list = reviewRepository.findAll();
+	public List<TestingDisplay> getAllOutputTable() {
+		List<TestingDisplay> list = reviewRepository.findAll();
 		return list;
 	}
 
 	@PostMapping("/outputTableEntry")
-	public OutputTable createOutputTableEntry(@Valid @RequestBody OutputTable outputTableEntry) {
+	public TestingDisplay createOutputTableEntry(@Valid @RequestBody TestingDisplay outputTableEntry) {
 		return reviewRepository.save(outputTableEntry);
 	}
 
 	@GetMapping(value = "/outputTableEntry/{id}")
-	public ResponseEntity<OutputTable> getOutputTableEntryById(@PathVariable("id") String id) {
-		OutputTable outputTableEntry = reviewRepository.findOne(id);
+	public ResponseEntity<TestingDisplay> getOutputTableEntryById(@PathVariable("id") String id) {
+		TestingDisplay outputTableEntry = reviewRepository.findOne(id);
 		if (outputTableEntry == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
@@ -56,16 +56,16 @@ public class ReviewController {
 	}
 
 	@PutMapping(value = "/outputTableEntry/{id}")
-	public ResponseEntity<OutputTable> updateOutputTableEntry(@PathVariable("id") String id,
-			@Valid @RequestBody OutputTable outputTable) {
-		OutputTable outputTableEntry = reviewRepository.findOne(id);
+	public ResponseEntity<TestingDisplay> updateOutputTableEntry(@PathVariable("id") String id,
+			@Valid @RequestBody TestingDisplay outputTable) {
+		TestingDisplay outputTableEntry = reviewRepository.findOne(id);
 		if (outputTableEntry == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		outputTableEntry.setCorrectCategory(outputTable.isCorrectCategory());
 		outputTableEntry.setFeedback(outputTable.getFeedback());
 
-		OutputTable updatedOutputTableEntry = reviewRepository.save(outputTableEntry);
+		TestingDisplay updatedOutputTableEntry = reviewRepository.save(outputTableEntry);
 		return new ResponseEntity<>(updatedOutputTableEntry, HttpStatus.OK);
 	}
 
@@ -75,7 +75,7 @@ public class ReviewController {
 	}
 
 	@GetMapping(value = "/getFilteredOutputTable")
-	public List<OutputTable> getFilteredOutputTable(@RequestParam(value = "city", required = false) String city,
+	public List<TestingDisplay> getFilteredOutputTable(@RequestParam(value = "city", required = false) String city,
 			@RequestParam(value = "hotel", required = false) String hotel,
 			@RequestParam(value = "source", required = false) String source,
 			@RequestParam(value = "fromDate", required = false) String fromDate,
@@ -103,7 +103,7 @@ public class ReviewController {
 		if (source != null) {
 			query.addCriteria(Criteria.where("source").is(source));
 		}
-		List<OutputTable> listOutput = mongoTemplate.find(query, OutputTable.class);
+		List<TestingDisplay> listOutput = mongoTemplate.find(query, TestingDisplay.class);
 		return listOutput;
 	}
 }
