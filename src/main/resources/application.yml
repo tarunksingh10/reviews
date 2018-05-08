@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: 'mongodb://manthan:G*ZKAg{8vTcHy7Rs@52.15.219.32:27017/reviews'
+      uri: 'mongodb://manthan:G*ZKAg{8vTcHy7Rs@18.216.204.216:27017/reviews'
       
       
 security:
